@@ -60,6 +60,86 @@ This repository contains everything needed to run locally with minimal setup:
 
 Follow these steps in order. If you just cloned the repo, this is all you need.
 
+### Copy‑paste quickstart (macOS/Linux)
+
+Run each block in a separate terminal so all services run at once.
+
+1) Database (Docker):
+```bash
+cd /Users/$(whoami)/Documents/PocketCats-self-contained
+docker compose up -d
+# Expected: container "java_db" up, port 80->5432 shown in `docker ps`.
+```
+
+2) Backend (Java 17):
+```bash
+cd /Users/$(whoami)/Documents/PocketCats-self-contained/backend
+export JAVA_HOME="$(`/usr/libexec/java_home -v 17)`" && export PATH="$JAVA_HOME/bin:$PATH"
+java -version # Expected: 17.x
+./mvnw -Dmaven.test.skip=true spring-boot:run
+# Expected: Spring Boot up on http://localhost:5432 with Swagger at /swagger-ui/index.html
+```
+
+3) ML service (Flask/TensorFlow):
+```bash
+cd /Users/$(whoami)/Documents/PocketCats-self-contained/cat-classificator
+python3 -m venv .venv && source .venv/bin/activate
+pip install --upgrade pip wheel setuptools
+pip install flask flasgger pillow flask-cors tensorflow keras
+python3 catdetector.py
+# Expected: Flask up on http://127.0.0.1:8000 with docs at /apidocs
+```
+
+4) Frontend (Next.js):
+```bash
+cd /Users/$(whoami)/Documents/PocketCats-self-contained/frontend
+printf "NEXT_PUBLIC_API_URL=http://localhost:5432\n" > .env
+npm install
+npm run dev
+# Expected: Next.js up on http://localhost:3000
+```
+
+### Copy‑paste quickstart (Windows PowerShell)
+
+Run each block in a separate PowerShell window so all services run at once.
+
+1) Database (Docker):
+```powershell
+cd $HOME\Documents\PocketCats-self-contained
+docker compose up -d
+# Expected: container "java_db" up, port 80->5432 shown in `docker ps`.
+```
+
+2) Backend (Java 17):
+```powershell
+cd $HOME\Documents\PocketCats-self-contained\backend
+$env:JAVA_HOME = "C:\\Program Files\\Java\\jdk-17"
+$env:Path = "$env:JAVA_HOME\\bin;$env:Path"
+java -version  # Expected: 17.x
+./mvnw.cmd -Dmaven.test.skip=true spring-boot:run
+# Expected: Spring Boot up on http://localhost:5432 with Swagger at /swagger-ui/index.html
+```
+
+3) ML service (Flask/TensorFlow):
+```powershell
+cd $HOME\Documents\PocketCats-self-contained\cat-classificator
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip wheel setuptools
+pip install flask flasgger pillow flask-cors tensorflow keras
+python catdetector.py
+# Expected: Flask up on http://127.0.0.1:8000 with docs at /apidocs
+```
+
+4) Frontend (Next.js):
+```powershell
+cd $HOME\Documents\PocketCats-self-contained\frontend
+Set-Content -Path .env -Value "NEXT_PUBLIC_API_URL=http://localhost:5432"
+npm install
+npm run dev
+# Expected: Next.js up on http://localhost:3000
+```
+
 ### 0) Prerequisites
 
 - Docker Desktop (macOS/Windows) or Docker Engine (Linux)
@@ -110,16 +190,21 @@ Expected:
 
 Use Java 17 in this terminal (see prerequisites). Then:
 
+macOS/Linux:
 ```bash
 cd backend
-./mvnw -DskipTests spring-boot:run
+export JAVA_HOME="$(`/usr/libexec/java_home -v 17)`" && export PATH="$JAVA_HOME/bin:$PATH"
+java -version  # Expected: 17.x
+./mvnw -Dmaven.test.skip=true spring-boot:run
 ```
 
 Windows (PowerShell):
-
 ```powershell
 cd backend
-./mvnw.cmd -DskipTests spring-boot:run
+$env:JAVA_HOME = "C:\\Program Files\\Java\\jdk-17"
+$env:Path = "$env:JAVA_HOME\\bin;$env:Path"
+java -version  # Expected: 17.x
+./mvnw.cmd -Dmaven.test.skip=true spring-boot:run
 ```
 
 Expected:
@@ -156,7 +241,7 @@ Apple Silicon note: if `tensorflow` fails to install, use `tensorflow-macos` ins
 
 Expected:
 - First run downloads VGG16 weights and prints a model summary.
-- Flask runs on http://127.0.0.1:8000 (docs at /apiddocs).
+- Flask runs on http://127.0.0.1:8000 (docs at /apidocs).
 
 ### 4) Start the frontend (Next.js)
 
