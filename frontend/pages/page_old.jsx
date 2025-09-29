@@ -10,8 +10,12 @@ const FrontPage = () => {
         <Link href="/login_page">
           <button className={styles.menuButton}>Sign In</button>
         </Link>
-        <button className={styles.menuButton}>Register</button>
-        <button className={styles.menuButton}>FAQ</button>
+        <Link href="/register">
+          <button className={styles.menuButton}>Register</button>
+        </Link>
+        <Link href="/how-it-works">
+          <button className={styles.menuButton}>FAQ</button>
+        </Link>
       </div>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>Pocket Cats</h1>

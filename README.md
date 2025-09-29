@@ -56,6 +56,19 @@ This repository contains everything needed to run locally with minimal setup:
   - API Docs: http://127.0.0.1:8000/apidocs
 - Postgres DB: localhost:80 (mapped to container 5432)
 
+### What is local vs external?
+
+- Everything in this repo runs locally: DB (Docker), Backend (Spring Boot), Frontend (Next.js), and ML (Flask).
+- OAuth login uses GitHub OAuth (an external third‑party). The app redirects to GitHub for login; the rest of the stack is local.
+
+### Seeded data
+
+- The backend includes Flyway migrations that create a simple `todos` table and add a `completed` column:
+  - `backend/src/main/resources/db/migration/V1__create_todos_table.sql`
+  - `backend/src/main/resources/db/migration/V2__add_completed_to_todos.sql`
+- No other seed data is inserted by default. You can create todos from the UI (todo list page after login) or via the API.
+- Cat records are created via the UI interactions when uploading images (and optionally using the local ML service).
+
 ## Run it locally (step‑by‑step, macOS/Windows/Linux)
 
 Follow these steps in order. If you just cloned the repo, this is all you need.
@@ -103,6 +116,11 @@ npm run dev
 ```
 
 Expected: Next.js up on http://localhost:3000
+
+Navigation notes:
+- “Sign In” sends you to `/login_page` where you can select “Login with Github” (OAuth flow).
+- “Register” shows a local page explaining that registration happens on first OAuth login.
+- “FAQ” links to `/how-it-works`.
 
 ### Copy‑paste quickstart (Windows PowerShell)
 
