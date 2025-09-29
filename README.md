@@ -68,17 +68,20 @@ Run each block in a separate terminal so all services run at once.
 ```bash
 cd /Users/$(whoami)/Documents/PocketCats-self-contained
 docker compose up -d
-# Expected: container "java_db" up, port 80->5432 shown in `docker ps`.
 ```
+
+Expected: container "java_db" up, port 80->5432 shown in `docker ps`.
 
 2) Backend (Java 17):
 ```bash
 cd /Users/$(whoami)/Documents/PocketCats-self-contained/backend
-export JAVA_HOME="$(`/usr/libexec/java_home -v 17)`" && export PATH="$JAVA_HOME/bin:$PATH"
-java -version # Expected: 17.x
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH="$JAVA_HOME/bin:$PATH"
+java -version
 ./mvnw -Dmaven.test.skip=true spring-boot:run
-# Expected: Spring Boot up on http://localhost:5432 with Swagger at /swagger-ui/index.html
 ```
+
+Expected: Spring Boot up on http://localhost:5432 with Swagger at /swagger-ui/index.html
 
 3) ML service (Flask/TensorFlow):
 ```bash
@@ -87,8 +90,9 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install --upgrade pip wheel setuptools
 pip install flask flasgger pillow flask-cors tensorflow keras
 python3 catdetector.py
-# Expected: Flask up on http://127.0.0.1:8000 with docs at /apidocs
 ```
+
+Expected: Flask up on http://127.0.0.1:8000 with docs at /apidocs
 
 4) Frontend (Next.js):
 ```bash
@@ -96,8 +100,9 @@ cd /Users/$(whoami)/Documents/PocketCats-self-contained/frontend
 printf "NEXT_PUBLIC_API_URL=http://localhost:5432\n" > .env
 npm install
 npm run dev
-# Expected: Next.js up on http://localhost:3000
 ```
+
+Expected: Next.js up on http://localhost:3000
 
 ### Copy‑paste quickstart (Windows PowerShell)
 
@@ -107,18 +112,20 @@ Run each block in a separate PowerShell window so all services run at once.
 ```powershell
 cd $HOME\Documents\PocketCats-self-contained
 docker compose up -d
-# Expected: container "java_db" up, port 80->5432 shown in `docker ps`.
 ```
+
+Expected: container "java_db" up, port 80->5432 shown in `docker ps`.
 
 2) Backend (Java 17):
 ```powershell
 cd $HOME\Documents\PocketCats-self-contained\backend
 $env:JAVA_HOME = "C:\\Program Files\\Java\\jdk-17"
 $env:Path = "$env:JAVA_HOME\\bin;$env:Path"
-java -version  # Expected: 17.x
+java -version
 ./mvnw.cmd -Dmaven.test.skip=true spring-boot:run
-# Expected: Spring Boot up on http://localhost:5432 with Swagger at /swagger-ui/index.html
 ```
+
+Expected: Spring Boot up on http://localhost:5432 with Swagger at /swagger-ui/index.html
 
 3) ML service (Flask/TensorFlow):
 ```powershell
@@ -128,8 +135,9 @@ py -3 -m venv .venv
 python -m pip install --upgrade pip wheel setuptools
 pip install flask flasgger pillow flask-cors tensorflow keras
 python catdetector.py
-# Expected: Flask up on http://127.0.0.1:8000 with docs at /apidocs
 ```
+
+Expected: Flask up on http://127.0.0.1:8000 with docs at /apidocs
 
 4) Frontend (Next.js):
 ```powershell
@@ -137,8 +145,9 @@ cd $HOME\Documents\PocketCats-self-contained\frontend
 Set-Content -Path .env -Value "NEXT_PUBLIC_API_URL=http://localhost:5432"
 npm install
 npm run dev
-# Expected: Next.js up on http://localhost:3000
 ```
+
+Expected: Next.js up on http://localhost:3000
 
 ### 0) Prerequisites
 
@@ -302,6 +311,8 @@ Notes:
   - Use `tensorflow-macos` instead of `tensorflow`.
 - OAuth login failing:
   - The backend ships with example GitHub client settings. You may need to configure your own OAuth app or test non‑OAuth endpoints.
+- Getting `dquote>` prompt in terminal:
+  - This means there’s an unmatched quote from copy/paste. Press Ctrl+C to cancel the line, then paste and run the commands line‑by‑line without inline comments. The quickstart blocks above have comments moved outside the code blocks to avoid this.
 
 ## Shutdown / close everything
 
