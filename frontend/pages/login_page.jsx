@@ -5,7 +5,6 @@ import styles from "../styles/LoginPage_old.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoginForm from "../components/LoginForm";
-import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
