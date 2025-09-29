@@ -7,7 +7,7 @@ export default async function handler(req, res) {
       res.status(404).send('todo not found')
       return
     }
-    res.send(result.rows)
+    res.send(result.rows[0])
   } else if (req.method === 'DELETE') {
     await db.query('DELETE FROM todos WHERE id = $1', [req.query.id])
     res.status(200).send()
@@ -17,6 +17,6 @@ export default async function handler(req, res) {
       res.status(404).send('todo not found')
       return
     }
-    res.send(result.rows)
+    res.send(result.rows[0])
   }
 }

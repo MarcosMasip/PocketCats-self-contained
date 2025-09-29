@@ -18,18 +18,23 @@ export default function ToDoList() {
   }, [todos]);
 
   async function fetchTodos(completed) {
-    const token = localStorage.getItem("authToken");
-    let path = "/todos";
-    if (completed !== undefined) {
-      path = `/todos?completed=${completed}`;
+    try {
+      let path = "/api/todos";
+      if (completed !== undefined) {
+        path = `/api/todos?completed=${completed}`;
+      }
+      const res = await fetch(path);
+      if (!res.ok) {
+        console.error("Failed to fetch todos:", res.status, await res.text());
+        setTodos([]);
+        return;
+      }
+      const json = await res.json();
+      setTodos(Array.isArray(json) ? json : []);
+    } catch (e) {
+      console.error("Error fetching todos:", e);
+      setTodos([]);
     }
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + path, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const json = await res.json();
-    setTodos(json);
   }
 
   const debouncedUpdateTodo = useCallback(debounce(updateTodo, 500), []);
@@ -55,25 +60,18 @@ export default function ToDoList() {
       name: todo.name,
       completed: todo.completed,
     };
-    const token = localStorage.getItem("authToken");
-
-    const res = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + `/todos/${todo.id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await fetch(`/api/todos/${todo.id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     console.log("todos:", todos);
   }
 
   async function addToDo(name) {
-    const token = localStorage.getItem("authToken");
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos`, {
+    const res = await fetch(`/api/todos`, {
       method: "POST",
       body: JSON.stringify({
         name: name,
@@ -81,7 +79,6 @@ export default function ToDoList() {
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
     if (res.ok) {
@@ -92,12 +89,10 @@ export default function ToDoList() {
   }
 
   async function handleDeleteToDo(id) {
-    const token = localStorage.getItem("authToken");
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos/${id}`, {
+    const res = await fetch(`/api/todos/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     });
     if (res.ok) {

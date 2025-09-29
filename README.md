@@ -118,7 +118,7 @@ Expected: Flask up on http://127.0.0.1:8000 with docs at /apidocs
 4) Frontend (Next.js):
 ```bash
 cd /Users/$(whoami)/Documents/PocketCats-self-contained/frontend
-printf "NEXT_PUBLIC_API_URL=http://localhost:5432\n" > .env
+printf "NEXT_PUBLIC_API_URL=http://localhost:5432\nDB_URL=postgres://postgres:postgres@localhost:80/postgres\n" > .env
 npm install
 npm run dev
 ```
@@ -195,7 +195,7 @@ Tips to install Java 17 if you don’t have it:
 - Windows (PowerShell):
   - Install JDK 17 (Adoptium/Temurin) and then set for the current session:
     ```powershell
-    $env:JAVA_HOME = "C:\\Program Files\\Java\\jdk-17"
+Set-Content -Path .env -Value "NEXT_PUBLIC_API_URL=http://localhost:5432`nDB_URL=postgres://postgres:postgres@localhost:80/postgres"
     $env:Path = "$env:JAVA_HOME\\bin;$env:Path"
     java -version   # should show 17.x
     ```
