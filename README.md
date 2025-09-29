@@ -61,6 +61,11 @@ This repository contains everything needed to run locally with minimal setup:
 - Everything in this repo runs locally: DB (Docker), Backend (Spring Boot), Frontend (Next.js), and ML (Flask).
 - OAuth login uses GitHub OAuth (an external third‑party). The app redirects to GitHub for login; the rest of the stack is local.
 
+Local demo login:
+- For a fully self‑contained experience without GitHub, a demo endpoint is provided:
+  - Backend: `POST http://localhost:5432/auth/demo` returns `{ token: "..." }`.
+  - Frontend: the Login page includes a “Demo Login (local)” button that calls this endpoint and signs you in locally.
+
 ### Seeded data
 
 - The backend includes Flyway migrations that create a simple `todos` table and add a `completed` column:
@@ -68,6 +73,9 @@ This repository contains everything needed to run locally with minimal setup:
   - `backend/src/main/resources/db/migration/V2__add_completed_to_todos.sql`
 - No other seed data is inserted by default. You can create todos from the UI (todo list page after login) or via the API.
 - Cat records are created via the UI interactions when uploading images (and optionally using the local ML service).
+
+Demo user:
+- The first time you click “Demo Login (local)”, a user `demo_user` is created in the local database (if not present) and a short‑lived JWT is issued for browsing protected pages.
 
 ## Run it locally (step‑by‑step, macOS/Windows/Linux)
 

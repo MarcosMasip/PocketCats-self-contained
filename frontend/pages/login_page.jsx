@@ -5,6 +5,7 @@ import styles from "../styles/LoginPage_old.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoginForm from "../components/LoginForm";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -42,6 +43,21 @@ const LoginPage = () => {
     }
   };
 
+  const handleDemoLogin = async () => {
+    try {
+      const res = await fetch("http://localhost:5432/auth/demo", { method: "POST" });
+      if (!res.ok) {
+        toast.error("Demo login failed");
+        return;
+      }
+      const data = await res.json();
+      localStorage.setItem("authToken", data.token);
+      router.push("/page_after_login");
+    } catch (err) {
+      toast.error("Demo login error");
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
@@ -53,6 +69,11 @@ const LoginPage = () => {
           onPasswordChange={(e) => setPassword(e.target.value)}
           onSubmit={handleSubmit}
         />
+        <div style={{ marginTop: 12 }}>
+          <button className={styles.submitButton} onClick={handleDemoLogin}>
+            Demo Login (local)
+          </button>
+        </div>
       </div>
       <ToastContainer />
     </div>

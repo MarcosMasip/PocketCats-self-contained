@@ -52,7 +52,7 @@ public class WebSecurityConfig {
         http.cors().and()// Enable CORS support
                 .csrf().disable() // Disable CSRF protection for simplicity (enable if needed)
                 .authorizeRequests()
-                .antMatchers("/", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .antMatchers("/", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/auth/demo").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
